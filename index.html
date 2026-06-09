@@ -91,7 +91,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
     });
     
     // Update active nav button
-    document.querySelectorAll('.nav-btn').forEach(btn => {
+    document.querySelectorAll('.nav-link-btn').forEach(btn => {
       if(btn.dataset && btn.dataset.section) {
         btn.classList.toggle('active', btn.dataset.section === sectionId);
       }
@@ -2101,11 +2101,11 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
       </div>
       <nav aria-label="Main system navigation">
         <ul class="nav-links">
-          <li><button class="nav-link-btn active" data-page="hero" id="nav-btn-hero">🏡 Hero</button></li>
-          <li><button class="nav-link-btn" data-page="calc" id="nav-btn-calc">⚡ Calculator</button></li>
-          <li><button class="nav-link-btn" data-page="dashboard" id="nav-btn-dashboard">📊 Results</button></li>
-          <li><button class="nav-link-btn" data-page="ai-insights" id="nav-btn-ai">💡 Insights</button></li>
-          <li><button class="nav-link-btn" data-page="progress" id="nav-btn-progress">🌱 Progress</button></li>
+          <li><button class="nav-link-btn active" data-section="hero" id="nav-btn-hero" onclick="showSection('hero')">🏡 Hero</button></li>
+          <li><button class="nav-link-btn" data-section="calculator" id="nav-btn-calc" onclick="showSection('calculator')">⚡ Calculator</button></li>
+          <li><button class="nav-link-btn" data-section="results" id="nav-btn-dashboard" onclick="showSection('results')">📊 Results</button></li>
+          <li><button class="nav-link-btn" data-section="insights" id="nav-btn-ai" onclick="showSection('insights')">💡 Insights</button></li>
+          <li><button class="nav-link-btn" data-section="progress" id="nav-btn-progress" onclick="showSection('progress')">🌱 Progress</button></li>
         </ul>
       </nav>
       <!-- Accessibility controllers -->
@@ -2124,7 +2124,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
   <main id="main-content" tabindex="-1">
 
     <!-- PAGE 1: HERO LANDING -->
-    <section id="page-hero" class="page-view active" aria-labelledby="hero-title">
+    <section id="hero" class="page-view active" aria-labelledby="hero-title">
       <div class="hero-container">
         <div class="hero-content animate__animated animate__fadeInLeft">
           <div class="hero-tagline">
@@ -2139,10 +2139,10 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
             <div class="ticker-value" id="global-co2-counter">38,124,561,080.00 tons</div>
           </div>
           <div class="hero-ctas">
-            <button class="btn btn-primary" id="hero-cta-start" aria-label="Navigate to carbon footprint calculator wizard">
+            <button class="btn btn-primary" id="hero-cta-start" aria-label="Navigate to carbon footprint calculator wizard" onclick="showSection('calculator')">
               Start Your Journey 🚀
             </button>
-            <button class="btn btn-secondary" id="hero-cta-quick-guide" aria-label="Open keyboard layout shortcuts overlay">
+            <button class="btn btn-secondary" id="hero-cta-quick-guide" aria-label="Open keyboard layout shortcuts overlay" onclick="showSection('calculator')">
               How it works
             </button>
           </div>
@@ -2424,7 +2424,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
     </section>
 
     <!-- PAGE 3: RESULTS DASHBOARD -->
-    <section id="page-dashboard" class="page-view" aria-labelledby="dashboard-title">
+    <section id="results" class="page-view" aria-labelledby="dashboard-title">
       <h1 id="dashboard-title" class="sr-only">Your Carbon Profile Performance Dashboard</h1>
       <div class="dashboard-layout">
         <!-- Circular gauge score container -->
@@ -2525,7 +2525,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
     </section>
 
     <!-- PAGE 4: AI INSIGHTS & PERSONALIZED REDUCTIONS -->
-    <section id="page-ai-insights" class="page-view" aria-labelledby="insights-title">
+    <section id="insights" class="page-view" aria-labelledby="insights-title">
       <h1 id="insights-title" class="sr-only">AI Action Plan & Emission Tips</h1>
       <div class="insights-layout">
         <div class="tips-list animate__animated animate__fadeInLeft" id="ai-tips-container">
@@ -2579,7 +2579,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
     </section>
 
     <!-- PAGE 5: PROGRESS TRACKER -->
-    <section id="page-progress" class="page-view" aria-labelledby="progress-title">
+    <section id="progress" class="page-view" aria-labelledby="progress-title">
       <h1 id="progress-title" class="sr-only">Historical Performance Tracker & Ranks</h1>
       <div class="progress-dashboard">
         <div class="progress-overview-panel animate__animated animate__fadeInLeft">
@@ -5017,7 +5017,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
     });
     
     // Update active nav button
-    document.querySelectorAll('.nav-btn').forEach(btn => {
+    document.querySelectorAll('.nav-link-btn').forEach(btn => {
       if(btn.dataset && btn.dataset.section) {
         btn.classList.toggle('active', btn.dataset.section === sectionId);
       }
