@@ -78,6 +78,75 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
     }, 500);
   };
 
+
+  // Navigation Router Override
+  const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
+  
+  window.showSection = function(sectionId) {
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.display = id === sectionId ? 'block' : 'none';
+      }
+    });
+    
+    // Update active nav button
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      if(btn.dataset && btn.dataset.section) {
+        btn.classList.toggle('active', btn.dataset.section === sectionId);
+      }
+    });
+    
+    // Announce for screen readers
+    const announcement = document.getElementById('score-announcement');
+    if (announcement) {
+      announcement.textContent = `Navigated to ${sectionId} section`;
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if(typeof showSection === 'function') {
+      showSection('hero');
+    }
+  });
+  
+  // Expose Router shim
+  window.Router = {
+    navigate: function(path) {
+      if(sections.includes(path)) {
+        showSection(path);
+      } else if (path === 'home') {
+        showSection('hero');
+      }
+    }
+  };
+
+
+  window.showStep = function(stepNum) {
+    for(let i=1; i<=4; i++) {
+      const el = document.getElementById('step-' + i);
+      if(el) el.style.display = (i === stepNum) ? 'block' : 'none';
+    }
+  };
+  
+  // Make sure step-1 is visible by default when calculator opens
+  const origShowSection = window.showSection;
+  window.showSection = function(sectionId) {
+    origShowSection(sectionId);
+    if(sectionId === 'calculator') {
+      if(typeof showStep === 'function') showStep(1);
+    }
+  };
+  
+  window.calculateAndShowResults = function() {
+    if(typeof recalculateCarbon === 'function') recalculateCarbon();
+    else if(typeof appState !== 'undefined' && appState.updateInputs) {
+       // fallback trigger
+       appState.notify();
+    }
+    showSection('results');
+  };
+
 </script>
 
   <style>
@@ -4933,6 +5002,75 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
       finalDiv.textContent = `Final: ${passed}/150 tests passed`;
       resultsDiv.appendChild(finalDiv);
     }, 500);
+  };
+
+
+  // Navigation Router Override
+  const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
+  
+  window.showSection = function(sectionId) {
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.display = id === sectionId ? 'block' : 'none';
+      }
+    });
+    
+    // Update active nav button
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      if(btn.dataset && btn.dataset.section) {
+        btn.classList.toggle('active', btn.dataset.section === sectionId);
+      }
+    });
+    
+    // Announce for screen readers
+    const announcement = document.getElementById('score-announcement');
+    if (announcement) {
+      announcement.textContent = `Navigated to ${sectionId} section`;
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if(typeof showSection === 'function') {
+      showSection('hero');
+    }
+  });
+  
+  // Expose Router shim
+  window.Router = {
+    navigate: function(path) {
+      if(sections.includes(path)) {
+        showSection(path);
+      } else if (path === 'home') {
+        showSection('hero');
+      }
+    }
+  };
+
+
+  window.showStep = function(stepNum) {
+    for(let i=1; i<=4; i++) {
+      const el = document.getElementById('step-' + i);
+      if(el) el.style.display = (i === stepNum) ? 'block' : 'none';
+    }
+  };
+  
+  // Make sure step-1 is visible by default when calculator opens
+  const origShowSection = window.showSection;
+  window.showSection = function(sectionId) {
+    origShowSection(sectionId);
+    if(sectionId === 'calculator') {
+      if(typeof showStep === 'function') showStep(1);
+    }
+  };
+  
+  window.calculateAndShowResults = function() {
+    if(typeof recalculateCarbon === 'function') recalculateCarbon();
+    else if(typeof appState !== 'undefined' && appState.updateInputs) {
+       // fallback trigger
+       appState.notify();
+    }
+    showSection('results');
   };
 
 </script>
