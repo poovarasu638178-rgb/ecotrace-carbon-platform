@@ -4466,7 +4466,14 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
 
     const appView = new AppView(appState);
     appState.loadState();
+    // CRITICAL: Force hero page on fresh load — never restore a cached page
+    appState.state.currentPage = 'hero';
     appController = new AppController(appState);
+    // CRITICAL: Immediately show hero section (don't rely on DOMContentLoaded
+    // since script is at bottom of body and DOM is already loaded)
+    if (typeof showSection === 'function') {
+      showSection('hero');
+    }
 
     // ==========================================================================
     // 8. INTERACTIVE CANVAS PARTICLE ENGINE
@@ -5115,10 +5122,12 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
     }
   };
 
-  // On page load, show hero by default
-  document.addEventListener('DOMContentLoaded', () => {
-    showSection('hero');
-  });
+  // Fallback: if DOM isn't ready yet, also listen for DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      showSection('hero');
+    });
+  }
 
 </script>
 
