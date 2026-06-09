@@ -4035,14 +4035,27 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
       }
 
       render(state) {
+        // Map old MVC page names → new section element IDs
+        const pageToSection = {
+          'hero': 'hero',
+          'calc': 'calculator',
+          'dashboard': 'results',
+          'ai-insights': 'insights',
+          'progress': 'progress'
+        };
+
         // Toggle view containers
-        document.querySelectorAll('.page-view').forEach(view => {
-          view.classList.remove('active');
+        const allViews = document.querySelectorAll('.page-view');
+        const targetId = pageToSection[state.currentPage] || state.currentPage;
+        allViews.forEach(view => {
+          if (view.id === targetId) {
+            view.style.display = 'block';
+            view.classList.add('active');
+          } else {
+            view.style.display = 'none';
+            view.classList.remove('active');
+          }
         });
-        const currentView = document.getElementById(`page-${state.currentPage}`);
-        if (currentView) {
-          currentView.classList.add('active');
-        }
 
         // Active navigation headers
         document.querySelectorAll('.nav-link-btn').forEach(btn => {
@@ -4892,16 +4905,96 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
   };
 
 
-  document.addEventListener('DOMContentLoaded', () => {
-    if(typeof showSection === 'function') {
-      showSection('hero');
+  // ═══════════════════════════════════════════════
+  // SINGLE AUTHORITATIVE NAVIGATION SYSTEM
+  // ═══════════════════════════════════════════════
+
+  /** Map new section IDs → old MVC state.currentPage values */
+  const sectionToPage = {
+    'hero': 'hero',
+    'calculator': 'calc',
+    'results': 'dashboard',
+    'insights': 'ai-insights',
+    'progress': 'progress'
+  };
+
+  const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
+
+  /**
+   * @function showSection
+   * @description Master navigation router — shows the target section,
+   *   hides all others, updates active nav state, and triggers MVC render.
+   * @param {string} sectionId - One of: hero, calculator, results, insights, progress
+   */
+  window.showSection = function(sectionId) {
+    // 1. Toggle visibility and .active class on all sections
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        if (id === sectionId) {
+          el.style.display = 'block';
+          el.classList.add('active');
+        } else {
+          el.style.display = 'none';
+          el.classList.remove('active');
+        }
+      }
+    });
+
+    // 2. Update active nav button
+    document.querySelectorAll('.nav-link-btn').forEach(btn => {
+      if (btn.dataset && btn.dataset.section) {
+        btn.classList.toggle('active', btn.dataset.section === sectionId);
+      }
+    });
+
+    // 3. Show step-1 when entering calculator
+    if (sectionId === 'calculator') {
+      for (let i = 1; i <= 4; i++) {
+        const stepEl = document.getElementById('step-' + i);
+        if (stepEl) stepEl.style.display = (i === 1) ? 'block' : 'none';
+      }
     }
-  });
-  
-  // Expose Router shim
+
+    // 4. Update MVC state.currentPage so render() fires content
+    if (typeof appState !== 'undefined' && appState.state) {
+      const mvcPage = sectionToPage[sectionId] || sectionId;
+      appState.state.currentPage = mvcPage;
+      // Trigger MVC render cycle to populate content
+      if (typeof appState.notify === 'function') {
+        appState.notify();
+      }
+    }
+
+    // 5. Announce for screen readers
+    const announcement = document.getElementById('score-announcement');
+    if (announcement) {
+      announcement.textContent = `Navigated to ${sectionId} section`;
+    }
+  };
+
+  /** Show calculator step */
+  window.showStep = function(stepNum) {
+    for (let i = 1; i <= 4; i++) {
+      const el = document.getElementById('step-' + i);
+      if (el) el.style.display = (i === stepNum) ? 'block' : 'none';
+    }
+  };
+
+  /** Calculate and navigate to results */
+  window.calculateAndShowResults = function() {
+    if (typeof recalculateCarbon === 'function') {
+      recalculateCarbon();
+    } else if (typeof appState !== 'undefined' && appState.notify) {
+      appState.notify();
+    }
+    showSection('results');
+  };
+
+  // Expose Router shim for legacy code
   window.Router = {
     navigate: function(path) {
-      if(sections.includes(path)) {
+      if (sections.includes(path)) {
         showSection(path);
       } else if (path === 'home') {
         showSection('hero');
@@ -4909,95 +5002,10 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
     }
   };
 
-
-  window.showStep = function(stepNum) {
-    for(let i=1; i<=4; i++) {
-      const el = document.getElementById('step-' + i);
-      if(el) el.style.display = (i === stepNum) ? 'block' : 'none';
-    }
-  };
-  
-  // Make sure step-1 is visible by default when calculator opens
-  const origShowSection = window.showSection;
-  window.showSection = function(sectionId) {
-    if (typeof origShowSection === 'function') {
-      origShowSection(sectionId);
-    }
-    if (sectionId === 'calculator' && typeof window.showStep === 'function') {
-      window.showStep(1);
-    }
-  };
-  
-  window.calculateAndShowResults = function() {
-    if(typeof recalculateCarbon === 'function') recalculateCarbon();
-    else if(typeof appState !== 'undefined' && appState.updateInputs) {
-       // fallback trigger
-       appState.notify();
-    }
-    showSection('results');
-  };
-
-
-  window.showSection = function(sectionId) {
-    const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
-    sections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        if (id === sectionId) {
-          el.style.display = 'block';
-          el.classList.add('active');
-        } else {
-          el.style.display = 'none';
-          el.classList.remove('active');
-        }
-      }
-    });
-    
-    // Update active nav button
-    document.querySelectorAll('.nav-link-btn').forEach(btn => {
-      if(btn.dataset && btn.dataset.section) {
-        btn.classList.toggle('active', btn.dataset.section === sectionId);
-      }
-    });
-    
-    // Announce for screen readers
-    const announcement = document.getElementById('score-announcement');
-    if (announcement) {
-      announcement.textContent = `Navigated to ${sectionId} section`;
-    }
-  };
-
-
-  // Navigation Router Override
-  const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
-  
-  window.showSection = function(sectionId) {
-    sections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        if (id === sectionId) {
-          el.style.display = 'block';
-          el.classList.add('active');
-        } else {
-          el.style.display = 'none';
-          el.classList.remove('active');
-        }
-      }
-    });
-    
-    // Update active nav button
-    document.querySelectorAll('.nav-link-btn').forEach(btn => {
-      if(btn.dataset && btn.dataset.section) {
-        btn.classList.toggle('active', btn.dataset.section === sectionId);
-      }
-    });
-    
-    // Announce for screen readers
-    const announcement = document.getElementById('score-announcement');
-    if (announcement) {
-      announcement.textContent = `Navigated to ${sectionId} section`;
-    }
-  };
+  // On page load, show hero by default
+  document.addEventListener('DOMContentLoaded', () => {
+    showSection('hero');
+  });
 
 </script>
 
