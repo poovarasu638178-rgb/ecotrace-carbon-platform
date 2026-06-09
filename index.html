@@ -2686,6 +2686,40 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
         }
         return token;
       }
+
+      /**
+       * Validates and cleans imported/stored state configurations to prevent security threats
+       * @param {object} obj
+       * @returns {object|null} validatedObj
+       */
+      static validateStateSchema(obj) {
+        if (!obj || typeof obj !== 'object') return null;
+        const clean = {};
+        for (const [key, value] of Object.entries(obj)) {
+          const cleanKey = SecurityModule.sanitize(key);
+          if (cleanKey === '-1') continue;
+          if (typeof value === 'string') {
+            const cleanVal = SecurityModule.sanitize(value);
+            if (cleanVal !== '-1') {
+              clean[cleanKey] = cleanVal;
+            }
+          } else if (typeof value === 'number' && !isNaN(value)) {
+            clean[cleanKey] = value;
+          } else if (typeof value === 'boolean') {
+            clean[cleanKey] = value;
+          } else if (Array.isArray(value)) {
+            clean[cleanKey] = value.map(item => {
+              if (typeof item === 'object') {
+                return SecurityModule.validateStateSchema(item);
+              }
+              return typeof item === 'string' ? SecurityModule.sanitize(item) : item;
+            }).filter(item => item !== '-1');
+          } else if (typeof value === 'object') {
+            clean[cleanKey] = SecurityModule.validateStateSchema(value);
+          }
+        }
+        return clean;
+      }
     }
 
     // ==========================================================================
@@ -2955,9 +2989,13 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
         try {
           const raw = atob(encodedString);
           const parsed = JSON.parse(raw);
-          this.updateInputs(parsed);
-          this.logAction("Profile configurations imported successfully.");
-          return true;
+          const validated = SecurityModule.validateStateSchema(parsed);
+          if (validated) {
+            this.updateInputs(validated);
+            this.logAction("Profile configurations imported successfully.");
+            return true;
+          }
+          return false;
         } catch (e) {
           console.error("Import profile failed", e);
           return false;
@@ -2989,11 +3027,14 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
           const stored = localStorage.getItem('ecotrace_v3_state');
           if (stored) {
             const parsed = JSON.parse(stored);
-            this.state.inputs = parsed.inputs || this.state.inputs;
-            this.state.results = parsed.results || this.state.results;
-            this.state.streak = parsed.streak || this.state.streak;
-            this.state.history = parsed.history || this.state.history;
-            this.state.tipsAdopted = parsed.tipsAdopted || this.state.tipsAdopted;
+            const validated = SecurityModule.validateStateSchema(parsed);
+            if (validated) {
+              this.state.inputs = validated.inputs || this.state.inputs;
+              this.state.results = validated.results || this.state.results;
+              this.state.streak = validated.streak || this.state.streak;
+              this.state.history = validated.history || this.state.history;
+              this.state.tipsAdopted = validated.tipsAdopted || this.state.tipsAdopted;
+            }
           } else {
             // Seed history log parameters
             this.state.history = [
@@ -3462,27 +3503,68 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
         });
 
         // Shortcuts help icon
-        document.getElementById('shortcuts-help').addEventListener('click', () => {
-          document.getElementById('shortcuts-modal').classList.add('active');
+        document.getElementById('shortcuts-help').addEventListener('click', (e) => {
+          this.activeTrigger = e.currentTarget;
+          const modal = document.getElementById('shortcuts-modal');
+          modal.classList.add('active');
+          const closeBtn = document.getElementById('modal-close');
+          if (closeBtn) closeBtn.focus();
         });
 
         // Shortcuts overlay close buttons
         const closeOverlay = () => {
           document.getElementById('shortcuts-modal').classList.remove('active');
+          if (this.activeTrigger) {
+            this.activeTrigger.focus();
+            this.activeTrigger = null;
+          }
         };
         document.getElementById('modal-close').addEventListener('click', closeOverlay);
         document.getElementById('shortcuts-modal').addEventListener('click', (e) => {
           if (e.target.id === 'shortcuts-modal') closeOverlay();
         });
 
-        // Keyboard hotkeys router
+        // Keyboard hotkeys and focus trap router
         document.addEventListener('keydown', (e) => {
+          const modal = document.getElementById('shortcuts-modal');
+          const isModalActive = modal.classList.contains('active');
+
+          if (isModalActive) {
+            // Handle Escape key
+            if (e.key === 'Escape') {
+              closeOverlay();
+              return;
+            }
+            // Keyboard Focus Trap logic
+            const focusables = modal.querySelectorAll('button, [tabindex="0"]');
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+
+            if (e.key === 'Tab') {
+              if (e.shiftKey) {
+                if (document.activeElement === first) {
+                  e.preventDefault();
+                  last.focus();
+                }
+              } else {
+                if (document.activeElement === last) {
+                  e.preventDefault();
+                  first.focus();
+                }
+              }
+            }
+            return;
+          }
+
           if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') {
             return;
           }
           switch (e.key) {
             case '?':
-              document.getElementById('shortcuts-modal').classList.add('active');
+              this.activeTrigger = document.getElementById('shortcuts-help');
+              modal.classList.add('active');
+              const closeBtn = document.getElementById('modal-close');
+              if (closeBtn) closeBtn.focus();
               break;
             case 'h':
               window.location.hash = 'hero';
@@ -3757,7 +3839,12 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
         this.chartJsLoaded = false;
 
         this.lazyLoadCharts();
-        this.state.subscribe((s) => this.render(s));
+        this.state.subscribe((s) => {
+          if (this.renderFrame) cancelAnimationFrame(this.renderFrame);
+          this.renderFrame = requestAnimationFrame(() => {
+            this.render(s);
+          });
+        });
       }
 
       lazyLoadCharts() {
