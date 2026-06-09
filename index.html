@@ -34,120 +34,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
 
   <!-- External Styles (Animate.css) and Scripts (DOMPurify, Chart.js loaded dynamically) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.3/dist/purify.min.js">
-  window.runAllTests = function() {
-    const resultsDiv = document.getElementById('test-results');
-    document.getElementById('test-panel').style.display = 'flex';
-    resultsDiv.innerHTML = "Initializing 150 tests...\n";
-    let passed = 0;
-    
-    // Simulate 150 tests running
-    const testCategories = [
-      {name: 'CALCULATOR TESTS', count: 40},
-      {name: 'SECURITY TESTS', count: 20},
-      {name: 'SANITIZATION TESTS', count: 15},
-      {name: 'UI/INTEGRATION TESTS', count: 20},
-      {name: 'ACCESSIBILITY TESTS', count: 15},
-      {name: 'PERFORMANCE TESTS', count: 10},
-      {name: 'EDGE CASE TESTS', count: 30}
-    ];
-    
-    const fragment = document.createDocumentFragment();
-    
-    let t_idx = 1;
-    testCategories.forEach(cat => {
-      for(let i=0; i<cat.count; i++) {
-        const div = document.createElement('div');
-        div.textContent = `✅ PASS: [${cat.name}] Test T${t_idx} (valid)`;
-        fragment.appendChild(div);
-        passed++;
-        t_idx++;
-      }
-    });
-    
-    setTimeout(() => {
-      resultsDiv.innerHTML = "";
-      resultsDiv.appendChild(fragment);
-      
-      const finalDiv = document.createElement('div');
-      finalDiv.style.marginTop = "10px";
-      finalDiv.style.fontWeight = "bold";
-      finalDiv.style.color = "#00C853";
-      finalDiv.textContent = `Final: ${passed}/150 tests passed`;
-      resultsDiv.appendChild(finalDiv);
-    }, 500);
-  };
-
-
-  // Navigation Router Override
-  const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
-  
-  window.showSection = function(sectionId) {
-    sections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.style.display = id === sectionId ? 'block' : 'none';
-      }
-    });
-    
-    // Update active nav button
-    document.querySelectorAll('.nav-link-btn').forEach(btn => {
-      if(btn.dataset && btn.dataset.section) {
-        btn.classList.toggle('active', btn.dataset.section === sectionId);
-      }
-    });
-    
-    // Announce for screen readers
-    const announcement = document.getElementById('score-announcement');
-    if (announcement) {
-      announcement.textContent = `Navigated to ${sectionId} section`;
-    }
-  };
-
-  document.addEventListener('DOMContentLoaded', () => {
-    if(typeof showSection === 'function') {
-      showSection('hero');
-    }
-  });
-  
-  // Expose Router shim
-  window.Router = {
-    navigate: function(path) {
-      if(sections.includes(path)) {
-        showSection(path);
-      } else if (path === 'home') {
-        showSection('hero');
-      }
-    }
-  };
-
-
-  window.showStep = function(stepNum) {
-    for(let i=1; i<=4; i++) {
-      const el = document.getElementById('step-' + i);
-      if(el) el.style.display = (i === stepNum) ? 'block' : 'none';
-    }
-  };
-  
-  // Make sure step-1 is visible by default when calculator opens
-  const origShowSection = window.showSection;
-  window.showSection = function(sectionId) {
-    origShowSection(sectionId);
-    if(sectionId === 'calculator') {
-      if(typeof showStep === 'function') showStep(1);
-    }
-  };
-  
-  window.calculateAndShowResults = function() {
-    if(typeof recalculateCarbon === 'function') recalculateCarbon();
-    else if(typeof appState !== 'undefined' && appState.updateInputs) {
-       // fallback trigger
-       appState.notify();
-    }
-    showSection('results');
-  };
-
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.3/dist/purify.min.js"></script>
 
   <style>
     /* ==========================================================================
@@ -2186,7 +2073,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
     </section>
 
     <!-- PAGE 2: MULTI-STEP WIZARD CALCULATOR -->
-    <section id="page-calc" class="page-view" aria-labelledby="calc-title">
+    <section id="calculator" class="page-view" aria-labelledby="calc-title">
       <div class="card calc-card animate__animated animate__fadeIn">
         <div class="calc-header">
           <div>
@@ -5008,12 +4895,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
   // Navigation Router Override
   const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
   
-  window.showSection = function(sectionId) {
-    sections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.style.display = id === sectionId ? 'block' : 'none';
-      }
+  
     });
     
     // Update active nav button
@@ -5057,11 +4939,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
   
   // Make sure step-1 is visible by default when calculator opens
   const origShowSection = window.showSection;
-  window.showSection = function(sectionId) {
-    origShowSection(sectionId);
-    if(sectionId === 'calculator') {
-      if(typeof showStep === 'function') showStep(1);
-    }
+  
   };
   
   window.calculateAndShowResults = function() {
@@ -5071,6 +4949,36 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
        appState.notify();
     }
     showSection('results');
+  };
+
+
+  window.showSection = function(sectionId) {
+    const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        if (id === sectionId) {
+          el.style.display = 'block';
+          el.classList.add('active');
+        } else {
+          el.style.display = 'none';
+          el.classList.remove('active');
+        }
+      }
+    });
+    
+    // Update active nav button
+    document.querySelectorAll('.nav-link-btn').forEach(btn => {
+      if(btn.dataset && btn.dataset.section) {
+        btn.classList.toggle('active', btn.dataset.section === sectionId);
+      }
+    });
+    
+    // Announce for screen readers
+    const announcement = document.getElementById('score-announcement');
+    if (announcement) {
+      announcement.textContent = `Navigated to ${sectionId} section`;
+    }
   };
 
 </script>
