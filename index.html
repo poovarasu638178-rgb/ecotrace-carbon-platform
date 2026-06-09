@@ -2594,7 +2594,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
    * Factory pattern, and 150+ unit tests
    */
 
-  const CONSTANTS = {
+  const APP_CONFIG = {
     INDIA_AVG_EMISSIONS: 1.9,
     WORLD_AVG_EMISSIONS: 4.7,
     USA_AVG_EMISSIONS: 14.9,
@@ -2641,7 +2641,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
 
   const rateLimiter = {
     lastCall: 0,
-    limit: CONSTANTS.API_RATE_LIMIT_MS,
+    limit: APP_CONFIG.API_RATE_LIMIT_MS,
     canCall() {
       const now = Date.now();
       if (now - this.lastCall >= this.limit) {
@@ -2667,7 +2667,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
 
    */
 
-  function debounce(fn, delay = CONSTANTS.DEBOUNCE_DELAY) {
+  function debounce(fn, delay = APP_CONFIG.DEBOUNCE_DELAY) {
     let timer;
     return function(...args) {
       clearTimeout(timer);
@@ -4892,26 +4892,6 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
   };
 
 
-  // Navigation Router Override
-  const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
-  
-  
-    });
-    
-    // Update active nav button
-    document.querySelectorAll('.nav-link-btn').forEach(btn => {
-      if(btn.dataset && btn.dataset.section) {
-        btn.classList.toggle('active', btn.dataset.section === sectionId);
-      }
-    });
-    
-    // Announce for screen readers
-    const announcement = document.getElementById('score-announcement');
-    if (announcement) {
-      announcement.textContent = `Navigated to ${sectionId} section`;
-    }
-  };
-
   document.addEventListener('DOMContentLoaded', () => {
     if(typeof showSection === 'function') {
       showSection('hero');
@@ -4939,7 +4919,13 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
   
   // Make sure step-1 is visible by default when calculator opens
   const origShowSection = window.showSection;
-  
+  window.showSection = function(sectionId) {
+    if (typeof origShowSection === 'function') {
+      origShowSection(sectionId);
+    }
+    if (sectionId === 'calculator' && typeof window.showStep === 'function') {
+      window.showStep(1);
+    }
   };
   
   window.calculateAndShowResults = function() {
@@ -4954,6 +4940,38 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
 
   window.showSection = function(sectionId) {
     const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        if (id === sectionId) {
+          el.style.display = 'block';
+          el.classList.add('active');
+        } else {
+          el.style.display = 'none';
+          el.classList.remove('active');
+        }
+      }
+    });
+    
+    // Update active nav button
+    document.querySelectorAll('.nav-link-btn').forEach(btn => {
+      if(btn.dataset && btn.dataset.section) {
+        btn.classList.toggle('active', btn.dataset.section === sectionId);
+      }
+    });
+    
+    // Announce for screen readers
+    const announcement = document.getElementById('score-announcement');
+    if (announcement) {
+      announcement.textContent = `Navigated to ${sectionId} section`;
+    }
+  };
+
+
+  // Navigation Router Override
+  const sections = ['hero', 'calculator', 'results', 'insights', 'progress'];
+  
+  window.showSection = function(sectionId) {
     sections.forEach(id => {
       const el = document.getElementById(id);
       if (el) {
