@@ -42,4 +42,5 @@ No server builds or bundlers required:
 ## 🌐 Project Deployment Info
 
 * **GitHub Repository**: [ecotrace-carbon-platform](https://github.com/poovarasu638178-rgb/ecotrace-carbon-platform)
-* **Live Deployment**: Hosted on Netlify.
+* **Live Deployment**: [https://ecotrace-carbon-platform-poo.netlify.app](https://ecotrace-carbon-platform-poo.netlify.app)
+
