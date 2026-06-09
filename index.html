@@ -1587,7 +1587,7 @@ Notion style minimal typography (Inter + Space Grotesk), and Vercel style data d
       border-radius: 22px;
       box-shadow: var(--shadow-lg);
       z-index: 999;
-      display: flex;
+      display: none !important; /* Visually hidden to clean up production UI */
       flex-direction: column;
       transform: translateY(calc(100% - 48px));
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
