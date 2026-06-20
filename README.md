@@ -1,4 +1,4 @@
-# EcoTrace 🌍 — Carbon Footprint Awareness Platform
+# EcotraceX 🌍 — Carbon Footprint Awareness Platform
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
@@ -7,7 +7,7 @@
 
 > Track it. Reduce it. Own it.
 
-EcoTrace is an enterprise-grade Carbon Footprint Awareness Platform built as part of **Hack2skill PromptWars Virtual Challenge 3**. It offers custom estimators, interactive data charts, streak gamification badges, and an AI advisory assistant designed to model individual sustainability metrics.
+EcotraceX is an enterprise-grade Carbon Footprint Awareness Platform built as part of **Hack2skill PromptWars Virtual Challenge 3**. It offers custom estimators, interactive data charts, streak gamification badges, and an AI advisory assistant designed to model individual sustainability metrics.
 
 ---
 
@@ -45,7 +45,7 @@ No server builds or bundlers required:
 
 ## 📸 Screenshots
 
-![Dashboard Placeholder](https://via.placeholder.com/800x400?text=EcoTrace+Dashboard+Screenshot)
+![Dashboard Placeholder](https://via.placeholder.com/800x400?text=EcotraceX+Dashboard+Screenshot)
 
 ---
 
@@ -69,5 +69,5 @@ Contributions are welcome! Please open an issue or submit a Pull Request followi
 
 ## 🌐 Project Deployment Info
 
-* **GitHub Repository**: [ecotrace-carbon-platform](https://github.com/poovarasu638178-rgb/ecotrace-carbon-platform)
-* **Live Deployment**: [https://ecotrace-carbon-platform-poo.netlify.app](https://ecotrace-carbon-platform-poo.netlify.app)
+* **GitHub Repository**: [ecotracex-carbon-platform](https://github.com/poovarasu638178-rgb/ecotracex-carbon-platform)
+* **Live Deployment**: [https://ecotracex-carbon-platform-poo.netlify.app](https://ecotracex-carbon-platform-poo.netlify.app)

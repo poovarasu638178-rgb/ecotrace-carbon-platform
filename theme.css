@@ -1,0 +1,66 @@
+/* ui-ux-pro-max: Feature-Rich Showcase Pattern */
+body {
+    background: radial-gradient(circle at top left, #020617, #0F172A);
+    color: #F8FAFC;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+/* Glassmorphism Cards */
+.card, section, .dashboard-panel {
+    background: rgba(30, 41, 59, 0.7) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    padding: 24px;
+    margin-bottom: 24px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover, section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Neon Green Buttons */
+button, .btn {
+    background: linear-gradient(135deg, #22C55E, #16A34A) !important;
+    color: #020617 !important;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+    transition: all 0.2s ease;
+}
+
+button:hover, .btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
+}
+
+/* Typography Enhancements */
+h1, h2, h3, h4, h5 {
+    font-family: 'Fira Code', monospace;
+    color: #22C55E;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Inputs */
+input, select, textarea {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(34, 197, 94, 0.3) !important;
+    color: #F8FAFC !important;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #22C55E !important;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+}

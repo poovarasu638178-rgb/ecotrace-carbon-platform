@@ -1,5 +1,5 @@
 /**
- * @fileoverview EcoTrace - Carbon Footprint 
+ * @fileoverview EcotraceX - Carbon Footprint 
  * Awareness Platform
  * @version 2.0.0
  * @author Poovarasu S
@@ -8,7 +8,7 @@
  * calculator with MVC architecture, Observer pattern,
  * Factory pattern, 150+ unit tests, WCAG AAA 
  * compliance, and Claude AI integration.
- * @module EcoTrace
+ * @module EcotraceX
  */
 
 /**
@@ -236,7 +236,7 @@ async function callClaudeAPI(prompt) {
     }
     return await response.json();
   } catch (error) {
-    console.error('[EcoTrace] Claude API failed:', error.message);
+    console.error('[EcotraceX] Claude API failed:', error.message);
     return { fallback: true };
   } finally {
     // hideLoadingSpinner();
