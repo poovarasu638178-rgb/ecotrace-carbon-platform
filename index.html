@@ -43,10 +43,10 @@
       --text-500:  #6b7280;
       --text-400:  #9ca3af;
 
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --radius-xl: 28px;
+      --radius-sm: 16px;
+      --radius-md: 24px;
+      --radius-lg: 32px;
+      --radius-xl: 40px;
 
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
       --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
@@ -740,13 +740,8 @@
 <header class="app-header" role="banner">
   <div class="header-inner">
     <div class="brand" role="img" aria-label="EcotraceX Logo">
-      <div class="brand-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke-width="0" fill="rgba(255,255,255,0.3)"/>
-          <path d="M7 13s2-4 5-4 5 4 5 4" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 9V6" stroke-linecap="round"/>
-          <path d="M9 16s1-2 3-2 3 2 3 2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+      <div class="brand-icon" aria-hidden="true" style="background:transparent; padding:0;">
+        <img src="favicon.png" alt="" style="width:100%;height:100%;object-fit:contain;border-radius:var(--radius-sm);">
       </div>
       EcotraceX
     </div>
@@ -1412,10 +1407,8 @@
     <div class="footer-top">
       <div class="footer-brand">
         <div class="brand" style="margin-bottom:0.75rem">
-          <div class="brand-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
-              <path d="M7 13s2-4 5-4 5 4 5 4"/><path d="M12 9V6"/><path d="M9 16s1-2 3-2 3 2 3 2"/>
-            </svg>
+          <div class="brand-icon" aria-hidden="true" style="background:transparent; padding:0;">
+            <img src="favicon.png" alt="" style="width:100%;height:100%;object-fit:contain;border-radius:var(--radius-sm);">
           </div>
           EcotraceX
         </div>
@@ -1453,7 +1446,7 @@
 
     <div class="footer-bottom">
       <p class="footer-copy">
-        &copy; 2026 <strong>EcotraceX</strong> — Built by <strong>Poovarasu S</strong> for CodeAlpha AI Internship 2026
+        <strong>EcotraceX</strong> — Created by <strong>Poovarasu S</strong> for Virtual: PromptWars Challenge 3 2026
       </p>
       <div class="footer-tags" aria-label="Project tags">
         <span class="footer-tag">NVIDIA AI</span>
