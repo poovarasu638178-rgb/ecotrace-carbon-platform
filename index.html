@@ -719,8 +719,8 @@
     ============================================= */
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; min-height: auto; gap: 2.5rem; }
-      .hero-visual { order: -1; }
-      .co2-orb { width: 200px; height: 200px; }
+      .hero-visual { order: -1; display: flex; justify-content: center; align-items: center; width: 100%; }
+      .co2-orb { width: 200px; height: 200px; margin: 0 auto; }
       .orb-value { font-size: 2.2rem; }
       .features-grid { grid-template-columns: 1fr 1fr; }
       .results-grid, .insights-grid, .progress-grid { grid-template-columns: 1fr; }
@@ -739,9 +739,12 @@
       /* ── Mobile centering ── */
       .hero-content { text-align: center; }
       .hero-eyebrow { justify-content: center; }
+      .hero-ctas { justify-content: center; flex-wrap: wrap; width: 100%; }
+      .hero-ctas .btn { width: auto; }
       .hero-actions { justify-content: center; flex-wrap: wrap; }
       .hero-title { text-align: center; }
       .hero-sub { text-align: center; }
+      .hero-desc { text-align: center; margin-left: auto; margin-right: auto; }
       .literacy-row { justify-content: center; }
       .co2-counter-wrap { text-align: center; }
       .section-heading { text-align: center; }
