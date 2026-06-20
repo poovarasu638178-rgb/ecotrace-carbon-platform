@@ -613,9 +613,9 @@
     }
 
     .footer-copy-line {
-      font-size: 0.85rem;
-      color: var(--text-400);
-      font-weight: 400;
+      font-size: 0.875rem;
+      color: var(--text-500);
+      font-weight: 500;
       letter-spacing: 0.01em;
     }
 
@@ -735,6 +735,29 @@
       .diet-grid { grid-template-columns: 1fr; }
       .footer-top { grid-template-columns: 1fr; }
       .footer-bottom { flex-direction: column; align-items: flex-start; }
+
+      /* ── Mobile centering ── */
+      .hero-content { text-align: center; }
+      .hero-eyebrow { justify-content: center; }
+      .hero-actions { justify-content: center; flex-wrap: wrap; }
+      .hero-title { text-align: center; }
+      .hero-sub { text-align: center; }
+      .literacy-row { justify-content: center; }
+      .co2-counter-wrap { text-align: center; }
+      .section-heading { text-align: center; }
+      .section-heading > div { text-align: center; }
+      .feature-card { text-align: center; }
+      .feature-card svg { margin: 0 auto; }
+      .dyk-banner { flex-direction: column; text-align: center; gap: 0.5rem; }
+      .section-heading h1,
+      .section-heading h2,
+      .section-heading p { text-align: center; }
+      .card { text-align: center; }
+      .card h2, .card h3 { text-align: center; }
+      .comp-row { text-align: left; }
+      .tip-card { flex-direction: column; align-items: center; text-align: center; }
+      .streak-card { text-align: center; }
+      .badge-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (prefers-reduced-motion: reduce) {
