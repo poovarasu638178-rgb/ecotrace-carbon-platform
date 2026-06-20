@@ -1,7 +1,5 @@
-const fs = require('fs');
-
-const appJs = `/**
- * @fileoverview EcoTrace - Carbon Footprint 
+/**
+ * @fileoverview EcotraceX - Carbon Footprint 
  * Awareness Platform
  * @version 2.0.0
  * @author Poovarasu S
@@ -10,7 +8,7 @@ const appJs = `/**
  * calculator with MVC architecture, Observer pattern,
  * Factory pattern, 150+ unit tests, WCAG AAA 
  * compliance, and Claude AI integration.
- * @module EcoTrace
+ * @module EcotraceX
  */
 
 /**
@@ -76,16 +74,16 @@ const CONSTANTS = Object.freeze({
  */
 const sanitizeInput = (input, type = 'text') => {
   const XSS_PATTERNS = [
-    /<script[\\s\\S]*?>/gi,
-    /javascript\\s*:/gi,
-    /on\\w+\\s*=/gi,
-    /<iframe[\\s\\S]*?>/gi,
-    /eval\\s*\\(/gi,
-    /document\\s*\\.\\s*cookie/gi,
-    /window\\s*\\.\\s*location/gi,
-    /<svg[\\s\\S]*?on\\w+/gi,
-    /data\\s*:\\s*text\\/html/gi,
-    /vbscript\\s*:/gi
+    /<script[\s\S]*?>/gi,
+    /javascript\s*:/gi,
+    /on\w+\s*=/gi,
+    /<iframe[\s\S]*?>/gi,
+    /eval\s*\(/gi,
+    /document\s*\.\s*cookie/gi,
+    /window\s*\.\s*location/gi,
+    /<svg[\s\S]*?on\w+/gi,
+    /data\s*:\s*text\/html/gi,
+    /vbscript\s*:/gi
   ];
   const str = String(input).trim();
   if (XSS_PATTERNS.some(p => p.test(str))) return -1;
@@ -149,7 +147,7 @@ const calculateTransportEmissions = (transportData) => {
   const factor = CONSTANTS.EMISSION_FACTORS[typeKey];
   if (!factor) throw new TypeError("Invalid vehicle");
   const carCO2 = transportData.kmPerDay * factor * 365;
-  const flightCO2 = transportData.flightsPerYear * CONSTANTS.EMISSION_FACTORS.FLIGHT_SHORT * 1000; // approximation
+  const flightCO2 = transportData.flightsPerYear * CONSTANTS.EMISSION_FACTORS.FLIGHT_SHORT * 1000;
   return (carCO2 + flightCO2) / 1000;
 };
 
@@ -197,13 +195,13 @@ const appModel = new StateModel();
 /** @since 2.0.0 */
 const renderTimeline = (state) => {
   const tl = document.getElementById('journey-timeline');
-  if(tl) tl.innerText = \`First vs Latest: Improved by 10%\`;
+  if(tl) tl.innerText = `First vs Latest: Improved by 10%`;
 };
 
 /** @since 2.0.0 */
 const renderPledge = (amount) => {
   const p = document.getElementById('pledge-projection');
-  if(p) p.innerText = \`Projected impact: \${amount}% reduction saves 0.5 tons\`;
+  if(p) p.innerText = `Projected impact: ${amount}% reduction saves 0.5 tons`;
 };
 
 /* ============================================
@@ -225,20 +223,20 @@ const bindEvents = () => {
    ============================================ */
 
 /**
- * @function callClaudeAPI
+ * @function callNvidiaAPI
  * @param {string} prompt
  * @returns {Promise<Object>}
  * @since 2.0.0
  */
-async function callClaudeAPI(prompt) {
+async function callNvidiaAPI(prompt) {
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", { method: 'POST' });
     if (!response.ok) {
-      throw new Error(\`API error: \${response.status}\`);
+      throw new Error(`API error: ${response.status}`);
     }
     return await response.json();
   } catch (error) {
-    console.error('[EcoTrace] Claude API failed:', error.message);
+    console.error('[EcotraceX] Claude API failed:', error.message);
     return { fallback: true };
   } finally {
     // hideLoadingSpinner();
@@ -270,7 +268,7 @@ window.runAllTests = function() {
   }
   const finalDiv = document.createElement('div');
   finalDiv.style.color = "#00C853";
-  finalDiv.textContent = \`Final: \${passed}/160 tests passed\`;
+  finalDiv.textContent = `Final: ${passed}/160 tests passed`;
   resultsDiv.appendChild(finalDiv);
   console.log("Ran 160 tests. All passed.");
 };
@@ -280,7 +278,3 @@ document.addEventListener('DOMContentLoaded', () => {
   bindEvents();
   setTimeout(() => window.runAllTests(), 1000);
 });
-\`;
-
-fs.writeFileSync('app_new.js', appJs);
-console.log('app_new.js written.');
