@@ -13,7 +13,7 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
   <style>
     /* =============================================
@@ -55,7 +55,7 @@
 
       --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
       --font-ui: 'Inter', -apple-system, system-ui, sans-serif;
-      --font-head: 'Inter', sans-serif;
+      --font-head: 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -74,8 +74,22 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    h1, h2, h3, h4, h5, h6, .card h2, .card h3 {
+    h1 {
+      font-family: var(--font-head) !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+    }
+    h2 {
+      font-family: var(--font-head) !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    h3, h4 {
+      font-family: var(--font-head) !important;
       font-weight: 600 !important;
+      letter-spacing: -0.01em;
     }
 
     /* =============================================
