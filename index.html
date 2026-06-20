@@ -33,6 +33,7 @@
       --green-50:  #f0fdf4;
 
       --bg:        #faf9f6;
+      --bg-overlay: rgba(250, 249, 246, 0.88);
       --surface:   #ffffff;
       --surface-2: #f4f4f0;
       --border:    #e5e7e0;
@@ -65,6 +66,10 @@
     body {
       font-family: var(--font-ui);
       background-color: var(--bg);
+      background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: var(--text-700);
       min-height: 100vh;
       display: flex;
@@ -719,7 +724,7 @@
        HIGH CONTRAST MODE
     ============================================= */
     body.high-contrast {
-      --bg: #000; --surface: #111; --surface-2: #1a1a1a;
+      --bg: #000; --bg-overlay: rgba(17, 17, 17, 0.95); --surface: #111; --surface-2: #1a1a1a;
       --border: #444; --border-2: #555;
       --text-900: #fff; --text-700: #eee; --text-500: #ccc; --text-400: #aaa;
       --green-50: #001a00; --green-100: #003300;
@@ -1446,7 +1451,7 @@
 
     <div class="footer-bottom">
       <p class="footer-copy">
-        <strong>EcotraceX</strong> — Created by <strong>Poovarasu S</strong> for Virtual: PromptWars Challenge 3 2026
+        <strong>EcotraceX</strong> — Created by <strong>Poovarasu S</strong> for Virtual: PromptWars 2026
       </p>
       <div class="footer-tags" aria-label="Project tags">
         <span class="footer-tag">NVIDIA AI</span>
